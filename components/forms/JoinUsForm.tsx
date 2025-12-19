@@ -52,6 +52,7 @@ const JoinUsForm = ({ onSubmit }: { onSubmit: () => void }) => {
           placeholder="Role/Position"
           className="form-input-style"
         />
+        
         <input
           type="file"
           accept=".pdf,.doc,.docx"

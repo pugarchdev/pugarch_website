@@ -29,6 +29,33 @@ const Navbar = () => {
     return href;
   };
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault(); // Always prevent default for hash links
+
+      if (pathname === "/") {
+        // ✅ Scroll to section with offset
+        const element = document.querySelector(href);
+        if (element) {
+          const navbarHeight = 100; // Adjust to match your navbar + margin
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+
+          // Update URL hash
+          window.history.pushState(null, '', href);
+        }
+      } else {
+        // Navigate to home page with hash
+        window.location.href = `/${href}`;
+      }
+    }
+  };
+
   return (
     <header className="mx-auto mt-4 max-w-[1440px] w-[95%] border border-black bg-black backdrop-blur-sm overflow-hidden">
       {/* Central Glow */}
@@ -55,6 +82,7 @@ const Navbar = () => {
             <Link
               key={item.name}
               href={getHref(item.href)}
+              onClick={(e) => handleNavClick(e, item.href)}
               className="text-gray-200 text-sm font-medium hover:text-violet-400 transition-colors duration-300 relative group"
               scroll={true}
             >
@@ -88,8 +116,12 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 href={getHref(item.href)}
+                onClick={(e) => {
+                  handleNavClick(e, item.href);
+                  setIsMenuOpen(false);
+                }}
                 className="text-gray-300 hover:text-violet-400 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+
                 scroll={true}
               >
                 {item.name}

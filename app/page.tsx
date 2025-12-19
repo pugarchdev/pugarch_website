@@ -11,6 +11,7 @@ import Loader from "../components/Loader"
 import { ArrowUp } from "lucide-react"
 import { motion, easeOut } from "framer-motion" // ✅ import easing function
 
+
 // 🚀 Lazy load heavy sections
 const ProductsSection = dynamic(() => import("../components/ProductsSection"), { ssr: false })
 const ClientsSection = dynamic(() => import("../components/ClientsSection"), { ssr: false })
@@ -55,24 +56,43 @@ function WhyPugArch() {
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
   const [fadeOut, setFadeOut] = useState(false)
+  const [componentsLoaded, setComponentsLoaded] = useState(false)
   const [showScrollTop, setShowScrollTop] = useState(false)
 
+  // useScrollToHash()
+
   useEffect(() => {
-    // Quick loader (<1s)
     const timeout = setTimeout(() => {
       setFadeOut(true)
-      setTimeout(() => setIsLoading(false), 500)
+      setTimeout(() => {
+        setIsLoading(false)
+        // ✅ Mark components as loaded
+        setTimeout(() => setComponentsLoaded(true), 100)
+      }, 500)
     }, 800)
     return () => clearTimeout(timeout)
   }, [])
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 300)
+
+   useEffect(() => {
+    if (componentsLoaded && window.location.hash) {
+      const hash = window.location.hash;
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          const navbarHeight = 100;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 300);
     }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [componentsLoaded]);
+
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -88,9 +108,8 @@ export default function Home() {
     <div className="min-h-screen bg-[#000000] text-white overflow-x-hidden">
       {isLoading ? (
         <div
-          className={`fixed inset-0 flex items-center justify-center transition-opacity duration-500 ease-in-out bg-black z-50 ${
-            fadeOut ? "opacity-0" : "opacity-100"
-          }`}
+          className={`fixed inset-0 flex items-center justify-center transition-opacity duration-500 ease-in-out bg-black z-50 ${fadeOut ? "opacity-0" : "opacity-100"
+            }`}
         >
           <Loader />
         </div>

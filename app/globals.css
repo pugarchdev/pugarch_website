@@ -2,11 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px; /* Offset for fixed navbar */
+}
+
 body {
   @apply bg-black text-white min-h-screen;
   scroll-behavior: smooth;
   margin: 0;
-  background-color:black;
+  background-color: black;
   overflow-x: hidden;
 }
 :root {
@@ -123,7 +128,11 @@ body {
 }
 
 .bg-glow {
-  background: radial-gradient(circle at center, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(168, 85, 247, 0.15) 0%,
+    transparent 70%
+  );
 }
 
 .fade-enter {
@@ -175,19 +184,24 @@ body {
 }
 
 /* globals.css or component CSS file */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
 }
 
 .background-blur {
-  background: radial-gradient(ellipse at center, rgba(106,0,255,0.3) 0%, rgba(0,0,0,1) 100%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(106, 0, 255, 0.3) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
   filter: blur(80px);
   pointer-events: none;
   z-index: -1;
 }
-  
+
 .text-video-mask h1,
 .text-video-mask h2,
 .text-video-mask p {
@@ -201,13 +215,21 @@ html, body {
 
 /* Infinite marquee animation */
 @keyframes marquee {
-  0%   { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes marquee-reverse {
-  0%   { transform: translateX(-50%); }
-  100% { transform: translateX(0%); }
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
 
 .animate-marquee {
@@ -221,5 +243,3 @@ html, body {
 html {
   scroll-behavior: smooth;
 }
-
-
