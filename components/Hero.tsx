@@ -4,18 +4,10 @@ import dynamic from "next/dynamic";
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 
-// ✅ Import Spline type
-import type Spline from "@splinetool/react-spline";
-
-// ✅ Dynamically import Spline with proper typing
-const SplineScene = dynamic(() => import("@splinetool/react-spline"), {
+// ✅ Import Spline dynamically WITHOUT a loading fallback
+const Spline = dynamic(() => import("@splinetool/react-spline"), {
   ssr: false,
-  loading: () => (
-    <div className="w-full h-full flex items-center justify-center bg-black">
-      <div className="text-white animate-pulse">Loading 3D Scene...</div>
-    </div>
-  ),
-}) as typeof Spline;
+}) as any;
 
 const Hero = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -32,19 +24,17 @@ const Hero = () => {
 
   return (
     <section className="relative h-screen w-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden">
-      {/* 🔹 Loader */}
+      {/* ✅ Spline Loader - Only show this loader animation */}
       {isMounted && isLoading && (
         <div className="absolute inset-0 z-50 flex justify-center items-center bg-black">
-          <SplineScene
-            scene="https://prod.spline.design/dFaU5JOutgAR1-Hx/scene.splinecode"
-          />
+          <Spline scene="https://prod.spline.design/dFaU5JOutgAR1-Hx/scene.splinecode" />
         </div>
       )}
 
-      {/* 🔹 Spline Background */}
+      {/* ✅ Spline Background - Show after loading */}
       {isMounted && (
         <div className="absolute inset-0">
-          <SplineScene
+          <Spline
             scene="https://prod.spline.design/IKzNUZKoVFM7tr91/scene.splinecode"
             onLoad={() => setIsLoading(false)}
           />
@@ -52,7 +42,7 @@ const Hero = () => {
         </div>
       )}
 
-      {/* 🔹 Foreground Content */}
+      {/* ✅ Content */}
       <div className="relative z-10 max-w-3xl">
         <h2 className="text-sm md:text-base text-white uppercase tracking-wider mb-2 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]">
           We Are
@@ -90,7 +80,7 @@ const Hero = () => {
   );
 };
 
-// Rest of the code remains the same...
+// Framer Motion Variants
 const container: Variants = {
   hidden: { opacity: 0, y: 40 },
   show: {
@@ -138,7 +128,7 @@ const WhyPugArch = () => {
         </motion.p>
 
         <motion.p variants={item} className="text-lg text-gray-300 mb-10">
-          We dont just develop software — we engineer business-changing
+          We don't just develop software — we engineer business-changing
           experiences.
         </motion.p>
 
