@@ -1,13 +1,30 @@
 "use client";
 import { useState, useEffect } from "react";
-import Spline from "@splinetool/react-spline";
+import dynamic from "next/dynamic";
 import { motion, Variants } from "framer-motion";
-import Link from "next/link"; // ✅ import Link
+import Link from "next/link";
+
+// ✅ Import Spline type
+import type Spline from "@splinetool/react-spline";
+
+// ✅ Dynamically import Spline with proper typing
+const SplineScene = dynamic(() => import("@splinetool/react-spline"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center bg-black">
+      <div className="text-white animate-pulse">Loading 3D Scene...</div>
+    </div>
+  ),
+}) as typeof Spline;
 
 const Hero = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // fallback loader timeout
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 4000);
     return () => clearTimeout(timer);
@@ -16,24 +33,24 @@ const Hero = () => {
   return (
     <section className="relative h-screen w-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden">
       {/* 🔹 Loader */}
-      {isLoading && (
+      {isMounted && isLoading && (
         <div className="absolute inset-0 z-50 flex justify-center items-center bg-black">
-          <Spline
+          <SplineScene
             scene="https://prod.spline.design/dFaU5JOutgAR1-Hx/scene.splinecode"
-            className="w-full h-full"
           />
         </div>
       )}
 
       {/* 🔹 Spline Background */}
-      <div className="absolute inset-0">
-        <Spline
-          scene="https://prod.spline.design/IKzNUZKoVFM7tr91/scene.splinecode"
-          className="w-full h-full"
-          onLoad={() => setIsLoading(false)}
-        />
-        <div className="absolute inset-0 bg-black/40" />
-      </div>
+      {isMounted && (
+        <div className="absolute inset-0">
+          <SplineScene
+            scene="https://prod.spline.design/IKzNUZKoVFM7tr91/scene.splinecode"
+            onLoad={() => setIsLoading(false)}
+          />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+      )}
 
       {/* 🔹 Foreground Content */}
       <div className="relative z-10 max-w-3xl">
@@ -46,15 +63,7 @@ const Hero = () => {
         <h3 className="text-2xl md:text-3xl font-semibold mb-4 text-white drop-shadow-[0_0_12px_rgba(0,0,0,0.8)]">
           Turning Ideas into Intelligent Solutions
         </h3>
-        {/* <p className="text-gray-200 text-base md:text-lg leading-relaxed mb-6 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]">
-          At PugArch Technology Pvt. Ltd., we create innovative digital solutions
-          that help businesses work smarter, faster, and more efficiently. From
-          dynamic websites and engaging mobile apps to powerful custom software
-          and skilled technology resource support, we are your trusted partner in
-          digital transformation.
-        </p> */}
 
-        {/* 🔹 CTA Buttons */}
         <div className="flex justify-center gap-4">
           <a
             href="#services"
@@ -66,7 +75,6 @@ const Hero = () => {
             Explore Our Services
           </a>
 
-          {/* ✅ Updated Talk to Us button */}
           <Link
             href="/talk-to-us"
             className="px-6 py-3 rounded-full bg-black text-white font-medium 
@@ -82,7 +90,7 @@ const Hero = () => {
   );
 };
 
-// ✅ Framer Motion Variants
+// Rest of the code remains the same...
 const container: Variants = {
   hidden: { opacity: 0, y: 40 },
   show: {
@@ -130,7 +138,7 @@ const WhyPugArch = () => {
         </motion.p>
 
         <motion.p variants={item} className="text-lg text-gray-300 mb-10">
-          We don’t just develop software — we engineer business-changing
+          We dont just develop software — we engineer business-changing
           experiences.
         </motion.p>
 
