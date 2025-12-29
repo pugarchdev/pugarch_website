@@ -97,7 +97,8 @@ export default function Footer() {
               </p>
               <div className="space-y-1">
                 <p>• <span className="font-medium text-white">Mail:</span> info@pugarch.in</p>
-                <p>• <span className="font-medium text-white">Contact No:</span> 7897858594</p>
+                <p>• <span className="font-medium text-white">Contact No:</span> 7887858594</p>
+                <p>• <span className="font-medium text-white">Contact No:</span> 8180006916</p>
               </div>
             </div>
           </div>
