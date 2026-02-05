@@ -1,13 +1,10 @@
 // Configuration for page transition loader
 export const LOADER_CONFIG = {
   // Duration in milliseconds
-  duration: 2000,
+  duration: 1500,
   
   // Minimum time to show loader (prevents flash)
   minDuration: 500,
-  
-  // Spline scene URL
-  splineScene: 'https://prod.spline.design/dFaU5JOutgAR1-Hx/scene.splinecode',
   
   // Enable/disable loader
   enabled: true,
@@ -20,7 +17,7 @@ export const LOADER_CONFIG = {
   
   // Fallback spinner config
   fallback: {
-    size: 'h-32 w-32',
+    size: 'h-24 w-24',
     color: 'border-purple-500',
     showText: true,
     text: 'Loading...',

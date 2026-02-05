@@ -2,23 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import dynamic from 'next/dynamic';
 import { LOADER_CONFIG } from '@/config/loader.config';
-
-// Dynamically import Spline with fallback
-const Spline = dynamic(() => import('@splinetool/react-spline'), {
-  ssr: false,
-  loading: () => (
-    <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center">
-      <div className={`animate-spin rounded-full ${LOADER_CONFIG.fallback.size} border-t-2 border-b-2 ${LOADER_CONFIG.fallback.color}`}></div>
-    </div>
-  ),
-}) as any;
 
 export default function PageTransitionLoader() {
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -40,7 +28,6 @@ export default function PageTransitionLoader() {
     // Show loader when route changes
     setIsLoading(true);
     setIsVisible(true);
-    setHasError(false);
 
     // Ensure minimum display time
     const minTimer = setTimeout(() => {
@@ -66,27 +53,33 @@ export default function PageTransitionLoader() {
         isLoading ? 'opacity-100' : 'opacity-0'
       }`}
     >
-      {!hasError ? (
-        <div className="w-full h-full">
-          <Spline
-            scene={LOADER_CONFIG.splineScene}
-            onError={() => {
-              console.warn('Spline page transition loader failed, using fallback');
-              setHasError(true);
-            }}
-          />
+      {/* Beautiful Animated Loader */}
+      <div className="flex flex-col items-center gap-6">
+        {/* Animated Logo */}
+        <div className="relative">
+          <div className="text-5xl font-bold text-white animate-pulse">
+            PUGARCH
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 blur-2xl opacity-50 animate-pulse"></div>
         </div>
-      ) : (
-        // Fallback spinner if Spline fails
-        <div className="flex flex-col items-center gap-4">
-          <div className={`animate-spin rounded-full ${LOADER_CONFIG.fallback.size} border-t-2 border-b-2 ${LOADER_CONFIG.fallback.color}`}></div>
-          {LOADER_CONFIG.fallback.showText && (
-            <p className="text-purple-400 text-lg animate-pulse">
-              {LOADER_CONFIG.fallback.text}
-            </p>
-          )}
+
+        {/* Spinning Circles */}
+        <div className="relative w-24 h-24">
+          <div className="absolute inset-0 border-4 border-purple-500/30 rounded-full"></div>
+          <div className="absolute inset-0 border-4 border-transparent border-t-purple-500 rounded-full animate-spin"></div>
+          <div 
+            className="absolute inset-2 border-4 border-transparent border-t-blue-500 rounded-full animate-spin" 
+            style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}
+          ></div>
         </div>
-      )}
+
+        {/* Loading Text */}
+        {LOADER_CONFIG.fallback.showText && (
+          <p className="text-purple-400 text-lg animate-pulse">
+            {LOADER_CONFIG.fallback.text}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
