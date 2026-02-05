@@ -4,8 +4,11 @@ import dynamic from "next/dynamic";
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 
-// ✅ Import Spline dynamically with loading fallback
-const Spline = dynamic(() => import("@splinetool/react-spline"), {
+// ✅ Import Spline dynamically with better error handling for production
+const Spline = dynamic(() => import("@splinetool/react-spline").catch(err => {
+  console.error('Failed to load Spline:', err);
+  return { default: () => null };
+}), {
   ssr: false,
   loading: () => (
     <div className="absolute inset-0 bg-black flex items-center justify-center">
@@ -18,10 +21,22 @@ const Hero = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [splineReady, setSplineReady] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    
+    // Set a timeout to show fallback if Spline doesn't load
+    const fallbackTimer = setTimeout(() => {
+      if (!splineReady) {
+        console.warn('Spline took too long to load, showing fallback');
+        setHasError(true);
+        setIsLoading(false);
+      }
+    }, 8000); // 8 seconds timeout
+
+    return () => clearTimeout(fallbackTimer);
+  }, [splineReady]);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 4000);
@@ -35,8 +50,9 @@ const Hero = () => {
         <div className="absolute inset-0 z-50 flex justify-center items-center bg-black">
           <Spline 
             scene="https://prod.spline.design/dFaU5JOutgAR1-Hx/scene.splinecode"
-            onError={() => {
-              console.warn('Spline loader failed, using fallback');
+            onLoad={() => setSplineReady(true)}
+            onError={(error: any) => {
+              console.warn('Spline loader failed:', error);
               setHasError(true);
               setIsLoading(false);
             }}
@@ -56,9 +72,12 @@ const Hero = () => {
         <div className="absolute inset-0">
           <Spline
             scene="https://prod.spline.design/IKzNUZKoVFM7tr91/scene.splinecode"
-            onLoad={() => setIsLoading(false)}
-            onError={() => {
-              console.warn('Spline background failed');
+            onLoad={() => {
+              setIsLoading(false);
+              setSplineReady(true);
+            }}
+            onError={(error: any) => {
+              console.warn('Spline background failed:', error);
               setHasError(true);
             }}
           />
@@ -66,9 +85,19 @@ const Hero = () => {
         </div>
       )}
 
-      {/* Fallback Background */}
+      {/* Fallback Background - Animated gradient */}
       {hasError && (
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-black to-black" />
+        <div className="absolute inset-0">
+          {/* Animated gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-black to-blue-900/30 animate-gradient"></div>
+          
+          {/* Animated particles effect */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float-slow top-1/4 left-1/4"></div>
+            <div className="absolute w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-float-slower top-1/2 right-1/4"></div>
+            <div className="absolute w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-float bottom-1/4 left-1/2"></div>
+          </div>
+        </div>
       )}
 
       {/* ✅ Content */}
