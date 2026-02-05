@@ -1,13 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import { Linkedin, Twitter, Facebook, Instagram, Mail } from 'lucide-react';
+import { Linkedin, Facebook, Instagram, Mail } from 'lucide-react';
 
 const socialLinks = [
   { href: 'https://www.linkedin.com/company/pugarch-technology-pvt-ltd/', icon: <Linkedin size={18} />, label: 'LinkedIn' },
-  { href: '#', icon: <Twitter size={18} />, label: 'Twitter' },
-  { href: '#', icon: <Facebook size={18} />, label: 'Facebook' },
+  { href: 'https://www.facebook.com/profile.php?id=61587269018749', icon: <Facebook size={18} />, label: 'Facebook' },
   { href: 'https://www.instagram.com/pugarchtechnology?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==', icon: <Instagram size={18} />, label: 'Instagram' },
-  { href: '#', icon: <Mail size={18} />, label: 'Email' },
+  { href: 'mailto:info@pugarch.in', icon: <Mail size={18} />, label: 'Email' },
 ];
 
 const quickLinks = [
@@ -33,7 +32,7 @@ export default function Footer() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pt-8">
           {/* Logo and Social Section */}
           <div className="space-y-6">
             <div>
@@ -55,7 +54,7 @@ export default function Footer() {
                   <a
                     key={index}
                     href={social.href}
-                    target="_blank"
+                    {...(social.href.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
                     className="w-9 h-9 rounded-sm bg-white/10 flex items-center justify-center text-white hover:bg-purple-500 transition-all duration-300 hover:scale-105"
                     aria-label={social.label}
                   >
@@ -83,6 +82,38 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Legal & Compliance */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-white">Legal & Compliance</h3>
+            <ul className="space-y-2 text-sm text-gray-300">
+              <li>
+                <Link href="/about" className="hover:text-white transition-colors duration-200">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-white transition-colors duration-200">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy-policy" className="hover:text-white transition-colors duration-200">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-white transition-colors duration-200">
+                  Terms & Conditions
+                </Link>
+              </li>
+              <li>
+                <Link href="/whatsapp" className="hover:text-white transition-colors duration-200">
+                  WhatsApp Policy
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           {/* Contact Info */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-white">Contact Us</h3>
@@ -97,10 +128,21 @@ export default function Footer() {
               </p>
               <div className="space-y-1">
                 <p>• <span className="font-medium text-white">Mail:</span> info@pugarch.in</p>
-                <p>• <span className="font-medium text-white">Contact No:</span> 7887858594</p>
                 <p>• <span className="font-medium text-white">Contact No:</span> 8180006916</p>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Copyright and Disclaimer */}
+        <div className="mt-8 pt-6 border-t border-white/10">
+          <div className="text-center space-y-2">
+            <p className="text-sm text-gray-400">
+              © {new Date().getFullYear()} PugArch Technology Pvt Ltd. All rights reserved.
+            </p>
+            <p className="text-xs text-gray-500">
+              PugArch Technology is a private technology service provider and is not a government authority.
+            </p>
           </div>
         </div>
       </div>

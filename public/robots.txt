@@ -1,0 +1,13 @@
+# Robots.txt for PugArch Technology Pvt Ltd
+# Ensures compliance pages are accessible for Meta verification
+
+User-agent: *
+Allow: /
+Allow: /about
+Allow: /contact
+Allow: /privacy-policy
+Allow: /terms
+Allow: /whatsapp
+
+# Sitemap
+Sitemap: https://www.pugarch.in/sitemap.xml
