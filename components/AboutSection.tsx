@@ -137,7 +137,7 @@ export default function AboutSection() {
     <section className="bg-black text-white py-24 px-6">
       {/* Heading ABOVE the text/image */}
       <div className="max-w-7xl mx-auto">
-        <h1 className="mb-6 text-violet-300/90 text-sm tracking-[5 em] uppercase text-center md:text-left">
+        <h1 className="mb-6 text-violet-300/90 text-xl font-bold tracking-[5 em] uppercase text-center md:text-left">
           About Us
         </h1>
 

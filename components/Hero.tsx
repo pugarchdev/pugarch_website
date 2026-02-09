@@ -4,9 +4,10 @@ import dynamic from "next/dynamic";
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 
-// ✅ Import Spline dynamically WITHOUT a loading fallback
-const Spline = dynamic(() => import("@splinetool/react-spline"), {
+// ✅ Import ThreeScene dynamically for performance and SSR safety
+const ThreeScene = dynamic(() => import("./ThreeScene"), {
   ssr: false,
+  loading: () => <div className="absolute inset-0 bg-black" />,
 }) as any;
 
 const Hero = () => {
@@ -17,145 +18,143 @@ const Hero = () => {
     setIsMounted(true);
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 4000);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <section className="relative h-screen w-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden">
-      {/* ✅ Spline Loader - Only show this loader animation */}
+    <section className="relative h-screen w-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden bg-black">
+      {/* ✅ Premium CSS Loader - Matches Website Theme */}
       {isMounted && isLoading && (
-        <div className="absolute inset-0 z-50 flex justify-center items-center bg-black">
-          <Spline scene="https://prod.spline.design/dFaU5JOutgAR1-Hx/scene.splinecode" />
+        <div className="absolute inset-0 z-50 flex flex-col justify-center items-center bg-black">
+          <div className="relative w-24 h-24">
+            <div className="absolute inset-0 border-4 border-violet-500/20 rounded-full" />
+            <div className="absolute inset-0 border-4 border-t-violet-500 rounded-full animate-spin" />
+            <div className="absolute inset-4 border-4 border-purple-500/10 rounded-full" />
+            <div className="absolute inset-4 border-b-4 border-purple-500 rounded-full animate-spin-slow" />
+          </div>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+            className="mt-6 text-violet-300 font-medium tracking-widest text-sm uppercase"
+          >
+            Initializing Experience
+          </motion.p>
         </div>
       )}
 
-      {/* ✅ Spline Background - Show after loading */}
+      {/* ✅ Three.js Background Model - Local GLTF for fast hosting */}
       {isMounted && (
         <div className="absolute inset-0">
-          <Spline
-            scene="https://prod.spline.design/IKzNUZKoVFM7tr91/scene.splinecode"
-            onLoad={() => setIsLoading(false)}
-          />
-          <div className="absolute inset-0 bg-black/40" />
+          <ThreeScene onLoaded={() => setIsLoading(false)} />
+          {/* Subtle vignette and color overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.4)_100%)] pointer-events-none" />
         </div>
       )}
 
-      {/* ✅ Content */}
-      <div className="relative z-10 max-w-3xl">
-        <h2 className="text-sm md:text-base text-white uppercase tracking-wider mb-2 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]">
-          We Are
-        </h2>
-        <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-white drop-shadow-[0_0_15px_rgba(0,0,0,0.9)]">
-          PUGARCH
+      {/* ✅ Content - Integrated with the 3D Scene */}
+      <motion.div 
+        className="relative z-10 max-w-4xl px-4"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: isLoading ? 0 : 1, y: isLoading ? 30 : 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-[0.3em] text-violet-400 uppercase border border-violet-500/30 rounded-full bg-violet-500/10 backdrop-blur-sm">
+            Innovation Redefined
+          </span>
+        </motion.div>
+        
+        <h1 className="text-5xl md:text-8xl font-black mb-6 text-white tracking-tighter">
+          PUG<span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-purple-600">ARCH</span>
         </h1>
-        <h3 className="text-2xl md:text-3xl font-semibold mb-4 text-white drop-shadow-[0_0_12px_rgba(0,0,0,0.8)]">
-          Turning Ideas into Intelligent Solutions
+        
+        <h3 className="text-xl md:text-3xl font-medium mb-8 text-gray-300 leading-relaxed max-w-2xl mx-auto">
+          Turning Ideas into <span className="text-white font-semibold">Intelligent Solutions</span> through advanced engineering.
         </h3>
 
-        <div className="flex justify-center gap-4">
-          <a
+        <div className="flex flex-col sm:flex-row justify-center gap-6 mt-4">
+          <Link
             href="#services"
-            className="px-6 py-3 rounded-full bg-black text-white font-medium 
-                       shadow-[0_0_10px_rgba(138,43,226,0.7)] border border-purple-500 
-                       hover:bg-purple-600 hover:shadow-[0_0_20px_rgba(138,43,226,0.9)] 
-                       transition duration-300"
+            className="group relative px-8 py-4 rounded-full bg-white text-black font-bold 
+                       overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
           >
-            Explore Our Services
-          </a>
+            <span className="relative z-10">Explore Our Services</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-200 to-white opacity-0 group-hover:opacity-100 transition-opacity" />
+          </Link>
 
           <Link
-            href="/talk-to-us"
-            className="px-6 py-3 rounded-full bg-black text-white font-medium 
-                       shadow-[0_0_10px_rgba(138,43,226,0.7)] border border-purple-500 
-                       hover:bg-purple-600 hover:shadow-[0_0_20px_rgba(138,43,226,0.9)] 
-                       transition duration-300"
+            href="/contact-us"
+            className="group relative px-8 py-4 rounded-full bg-transparent text-white font-bold 
+                       border-2 border-violet-500/50 backdrop-blur-sm
+                       transition-all duration-300 hover:scale-105 active:scale-95"
           >
-            Talk to Us
+            <span className="relative z-10">Talk to Us</span>
+            <div className="absolute inset-0 bg-violet-600/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
           </Link>
         </div>
-      </div>
+      </motion.div>
+      
+      {/* Scroll Indicator */}
+      {!isLoading && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
+        >
+          <div className="w-[1px] h-12 bg-gradient-to-b from-violet-500 to-transparent animate-pulse" />
+          <span className="text-[10px] uppercase tracking-[0.4em] text-violet-400/80">Scroll</span>
+        </motion.div>
+      )}
     </section>
   );
 };
 
-// Framer Motion Variants
-const container: Variants = {
-  hidden: { opacity: 0, y: 40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      staggerChildren: 0.25,
-      duration: 0.8,
-      ease: "easeOut",
-    },
-  },
-};
-
-const item: Variants = {
-  hidden: { opacity: 0, y: 40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: "easeOut" },
-  },
-};
-
+// Keep WhyPugArch as requested
 const WhyPugArch = () => {
   return (
-    <section className="relative bg-black text-white py-20 px-6 md:px-12 text-center overflow-hidden">
+    <section className="relative bg-black text-white py-32 px-6 md:px-12 text-center overflow-hidden border-t border-white/5">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_rgba(124,58,237,0.05)_0%,_transparent_50%)]" />
+      
       <motion.div
-        className="relative z-10 max-w-4xl mx-auto"
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: false, amount: 0.3 }}
+        className="relative z-10 max-w-5xl mx-auto"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, amount: 0.3 }}
       >
-        <motion.h2
-          variants={item}
-          className="text-3xl md:text-4xl font-bold mb-6 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]"
-        >
-          Why PugArch?
-        </motion.h2>
+        <h2 className="text-4xl md:text-5xl font-black mb-8 tracking-tight">
+          Why <span className="text-violet-500">PugArch</span>?
+        </h2>
 
-        <motion.p
-          variants={item}
-          className="text-xl font-semibold text-purple-300 mb-6"
-        >
-          We are PugArch — transforming ideas into powerful digital solutions.
-        </motion.p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left mt-16">
+          <div className="space-y-4 p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-violet-500/30 transition-colors group">
+            <div className="w-12 h-12 rounded-2xl bg-violet-600/20 flex items-center justify-center text-violet-400 font-bold group-hover:scale-110 transition-transform">01</div>
+            <h4 className="text-xl font-bold">Custom Development</h4>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              High-performance web & mobile applications tailored to your specific business needs.
+            </p>
+          </div>
 
-        <motion.p variants={item} className="text-lg text-gray-300 mb-10">
-          We don't just develop software — we engineer business-changing
-          experiences.
-        </motion.p>
+          <div className="space-y-4 p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-violet-500/30 transition-colors group">
+            <div className="w-12 h-12 rounded-2xl bg-violet-600/20 flex items-center justify-center text-violet-400 font-bold group-hover:scale-110 transition-transform">02</div>
+            <h4 className="text-xl font-bold">SaaS Solutions</h4>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Agile, scalable, and cloud-ready architectures that grow with your user base.
+            </p>
+          </div>
 
-        <motion.div
-          variants={container}
-          className="space-y-6 text-left max-w-2xl mx-auto"
-        >
-          <motion.p variants={item} className="flex items-start gap-3">
-            <span className="text-gray-200">
-              <strong>Custom Development –</strong> High-performance web & mobile
-              applications.
-            </span>
-          </motion.p>
-
-          <motion.p variants={item} className="flex items-start gap-3">
-            <span className="text-gray-200">
-              <strong>SaaS Solutions –</strong> Agile, scalable, and cloud-ready.
-            </span>
-          </motion.p>
-
-          <motion.p variants={item} className="flex items-start gap-3">
-            <span className="text-gray-200">
-              <strong>Business Systems –</strong> Facility, field, and workforce
-              management tools that deliver measurable impact.
-            </span>
-          </motion.p>
-        </motion.div>
+          <div className="space-y-4 p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-violet-500/30 transition-colors group">
+            <div className="w-12 h-12 rounded-2xl bg-violet-600/20 flex items-center justify-center text-violet-400 font-bold group-hover:scale-110 transition-transform">03</div>
+            <h4 className="text-xl font-bold">Business Systems</h4>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Facility, field, and workforce management tools that deliver measurable impact.
+            </p>
+          </div>
+        </div>
       </motion.div>
     </section>
   );
