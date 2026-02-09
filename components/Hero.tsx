@@ -98,7 +98,7 @@ const Hero = () => {
       </motion.div>
       
       {/* Scroll Indicator */}
-      {!isLoading && (
+      {/* {!isLoading && (
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -108,7 +108,7 @@ const Hero = () => {
           <div className="w-[1px] h-12 bg-gradient-to-b from-violet-500 to-transparent animate-pulse" />
           <span className="text-[10px] uppercase tracking-[0.4em] text-violet-400/80">Scroll</span>
         </motion.div>
-      )}
+      )} */}
     </section>
   );
 };
