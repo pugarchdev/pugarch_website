@@ -49,7 +49,7 @@ export async function POST(
 
     await transporter.sendMail({
       from: `"PugArch Contact" <${process.env.EMAIL_USER}>`,
-      to: process.env.RECIPIENT_EMAIL,
+      to: process.env.RECIPIENT_EMAIL?.split(","),
       subject: subject,
       html: emailContent,
       replyTo: formData.email,
