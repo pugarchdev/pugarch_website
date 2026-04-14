@@ -5,7 +5,7 @@ import type { EmailResponse } from "@/types/forms";
 export const dynamic = "force-dynamic";
 
 export async function POST(
-  request: NextRequest
+  request: NextRequest,
 ): Promise<NextResponse<EmailResponse>> {
   try {
     const formData = await request.formData();
@@ -28,7 +28,7 @@ export async function POST(
           message: "Missing required fields",
           error: "Validation error",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -58,7 +58,7 @@ export async function POST(
     // Send email with timeout
     const emailPromise = transporter.sendMail({
       from: `"PugArch Careers" <${process.env.EMAIL_USER}>`,
-      to: process.env.RECIPIENT_EMAIL,
+      to: process.env.RECIPIENT_EMAIL?.split(","),
       subject: subject,
       html: emailContent,
       replyTo: email,
@@ -67,7 +67,7 @@ export async function POST(
 
     // Set a timeout of 15 seconds
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Email sending timeout")), 15000)
+      setTimeout(() => reject(new Error("Email sending timeout")), 15000),
     );
 
     // Race between email sending and timeout

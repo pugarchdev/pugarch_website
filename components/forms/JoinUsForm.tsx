@@ -72,6 +72,8 @@ const JoinUsForm: React.FC<JoinUsFormProps> = ({ onSubmit }) => {
           name="email"
           placeholder="Email"
           required
+          pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+          title="Enter a valid email address (e.g. name@example.com)"
           className="form-input-style col-span-full"
         />
 
@@ -80,6 +82,7 @@ const JoinUsForm: React.FC<JoinUsFormProps> = ({ onSubmit }) => {
           name="phone"
           placeholder="Phone Number"
           className="form-input-style"
+          maxLength={10}
         />
         <input
           type="url"
