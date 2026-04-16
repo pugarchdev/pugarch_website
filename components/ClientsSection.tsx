@@ -81,23 +81,18 @@ const IndustryGrid = ({ logos }: { logos: string[] }) => {
 
 const ClientsSection = () => {
   const clientLogos = [
-    '/images/cl1.png',
     '/images/cl2.png',
     '/images/cl3.png',
-    '/images/cl4.png',
     '/images/cl5.png',
     '/images/cl6.png',
     '/images/cl7.png',
-    '/images/cl8.png',
     '/images/cl9.png',
     '/images/cl10.png',
     '/images/cl11.jpg',
     '/images/cl12.png',
     '/images/cl13.jpg',
-    '/images/cl14.png',
     '/images/cl15.jpg',
     '/images/cl16.png',
-    '/images/cl17.png',
     '/images/cl18.png',
     '/images/cl19.png',
     '/images/cl20.png',
