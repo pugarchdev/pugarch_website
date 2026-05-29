@@ -127,8 +127,8 @@ export default function Footer() {
                 Maharashtra
               </p>
               <div className="space-y-1">
-                <p>• <span className="font-medium text-white">Mail:</span> info@pugarch.in</p>
-                <p>• <span className="font-medium text-white">Contact No:</span> 8180006916</p>
+                <p>• <span className="font-medium text-white">Mail:</span> info@pugarch.in, sunita.pathak@pugarch.in</p>
+                <p>• <span className="font-medium text-white">Contact No:</span> 9920214821</p>
               </div>
             </div>
           </div>
