@@ -119,7 +119,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4 text-white">Contact Us</h3>
             <div className="space-y-3 text-sm text-gray-300">
               <p>
-                L-18 LIG Mahada Colony, Laxman Nagar, Manewada, Nagpur, Maharashtra
+                L-18 LIC Mahada Colony, Laxman Nagar, Manewada, Nagpur, Maharashtra
               </p>
               <p>
                 <span className="font-medium text-white">Branch Office:</span> Mumbai Off No.128, 1st Floor Raghuleela Mega Mall,
