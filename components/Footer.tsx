@@ -122,9 +122,7 @@ export default function Footer() {
                 L-18 LIC Mahada Colony, Laxman Nagar, Manewada, Nagpur, Maharashtra
               </p>
               <p>
-                <span className="font-medium text-white">Branch Office:</span> Mumbai Off No.128, 1st Floor Raghuleela Mega Mall,
-                Boraspada Road, Behind Poisar Bus Depot, Kandivali(W), Mumbai-400067,
-                Maharashtra
+                <span className="font-medium text-white">Branch Office:</span> W-31/2403, Lodha Amara, Sandozbaugh, Thane-400607, Maharashtra, India
               </p>
               <div className="space-y-1">
                 <p>• <span className="font-medium text-white">Mail:</span> info@pugarch.in</p>
