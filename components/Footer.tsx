@@ -119,10 +119,10 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4 text-white">Contact Us</h3>
             <div className="space-y-3 text-sm text-gray-300">
               <p>
-                L-18 LIC Mahada Colony, Laxman Nagar, Manewada, Nagpur, Maharashtra
+                Registered Office(Nagpur): L-18 LIC Mahada Colony, Laxman Nagar, Manewada, Nagpur, Maharashtra
               </p>
               <p>
-                <span className="font-medium text-white">Branch Office:</span> W-31/2403, Lodha Amara, Sandozbaugh, Thane-400607, Maharashtra, India
+                <span className="font-medium text-white">Branch Office(Mumbai):</span> W-31/2403, Lodha Amara, Sandozbaugh, Thane-400607, Maharashtra, India
               </p>
               <div className="space-y-1">
                 <p>• <span className="font-medium text-white">Mail:</span> info@pugarch.in</p>
